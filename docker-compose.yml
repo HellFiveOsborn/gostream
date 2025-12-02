@@ -12,7 +12,6 @@ services:
       - /run/nginx:mode=755
     environment:
       - TZ=America/Sao_Paulo
-      - PORT=80
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/"]
       interval: 30s
@@ -25,10 +24,6 @@ services:
           memory: 700M
         reservations:
           memory: 256M
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.gorestream.entrypoints=web,websecure"
-      - "traefik.http.services.gorestream.loadbalancer.server.port=80"
     networks:
       - dokploy-network
 
