@@ -4,7 +4,7 @@ COPY main.go .
 RUN go mod init restreamer && go build -o server main.go
 
 FROM alpine:latest
-RUN apk add --no-cache ffmpeg nginx ca-certificates \
+RUN apk add --no-cache ffmpeg nginx ca-certificates gettext \
     && mkdir -p /run/nginx \
     && mkdir -p /dev/shm/hls
 
