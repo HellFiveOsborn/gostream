@@ -34,6 +34,5 @@ services:
       - "traefik.http.services.gorestream.loadbalancer.server.port=${PORT:-8080}"
 
 networks:
-  default:
-    name: dokploy-network
+  dokploy-network:
     external: true
