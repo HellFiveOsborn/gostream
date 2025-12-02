@@ -152,9 +152,10 @@ func startFFmpeg(proc *StreamProcess) {
 	proc.mu.Unlock()
 
 	log.Printf("[%s] Iniciando encode: %s", proc.ID, url)
+	log.Printf("[%s] Output dir: %s", proc.ID, outputDir)
 
 	cmd := exec.Command("ffmpeg",
-		"-hide_banner", "-loglevel", "error",
+		"-hide_banner", "-loglevel", "warning",
 		"-reconnect", "1", "-reconnect_at_eof", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2",
 		"-i", url,
 		"-vf", "scale=-2:480",
@@ -170,6 +171,10 @@ func startFFmpeg(proc *StreamProcess) {
 		playlist,
 	)
 
+	// Captura stderr para ver erros do FFmpeg
+	var stderr strings.Builder
+	cmd.Stderr = &stderr
+
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 
 	proc.mu.Lock()
@@ -177,6 +182,11 @@ func startFFmpeg(proc *StreamProcess) {
 	proc.mu.Unlock()
 
 	err := cmd.Run()
+
+	// Log do erro detalhado
+	if err != nil && stderr.Len() > 0 {
+		log.Printf("[%s] FFmpeg stderr: %s", proc.ID, stderr.String())
+	}
 
 	proc.mu.Lock()
 	isManualStop := proc.ManualStop
