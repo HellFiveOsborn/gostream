@@ -55,9 +55,6 @@ func main() {
 }
 
 func apiHandler(w http.ResponseWriter, r *http.Request) {
-	log.Printf("[DEBUG] Requisição recebida: Method=%s Path=%s URL=%s RemoteAddr=%s",
-		r.Method, r.URL.Path, r.URL.String(), r.RemoteAddr)
-
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 

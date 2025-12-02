@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo "=== GoRestream Iniciando ==="
-
 # Testa configuração do Nginx
 nginx -t
 
@@ -21,5 +19,5 @@ else
 fi
 
 # Inicia o Go App (porta interna 3000)
-echo "Iniciando Go server na porta 3000..."
+echo "Iniciando Go server..."
 exec /app/server
