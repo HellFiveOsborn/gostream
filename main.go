@@ -48,15 +48,10 @@ func main() {
 	os.RemoveAll(HlsDir)
 	os.MkdirAll(HlsDir, 0777)
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-
 	http.HandleFunc("/", apiHandler)
 
-	fmt.Printf("API Restreamer iniciada na porta %s...\n", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	fmt.Println("API Restreamer iniciada na porta 3000...")
+	log.Fatal(http.ListenAndServe(":3000", nil))
 }
 
 func apiHandler(w http.ResponseWriter, r *http.Request) {
