@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  gorestream:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gorestream
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - /dev/shm:/dev/shm
+    tmpfs:
+      - /run/nginx:mode=755
+    environment:
+      - TZ=America/Sao_Paulo
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 256M
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gorestream.entrypoints=web,websecure"
+      - "traefik.http.services.gorestream.loadbalancer.server.port=80"
+
+networks:
+  default:
+    name: dokploy-network
+    external: true
