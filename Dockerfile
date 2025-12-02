@@ -14,6 +14,5 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
-ARG PORT=8080
-EXPOSE ${PORT}
+EXPOSE 80
 CMD ["/app/entrypoint.sh"]
